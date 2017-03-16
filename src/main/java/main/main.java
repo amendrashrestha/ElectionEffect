@@ -17,7 +17,7 @@ public class main {
         String countTable = "tbl_count_" + single_newsType; 
         
 //        String FV_news_table = "tbl_count_" + single_newsType;
-        String postTableName = "tbl_" + single_newsType + "_posts_user";
+        String postTableName = "tbl_" + single_newsType + "_posts_user_day";
         String validUserTable = "tbl_" + single_newsType + "_valid_user";
 
         String LimitedLIWCFeatureFile = IOProperties.LIWC_LIMITED_CATEGORY_WORD_FILEPATH;
@@ -31,11 +31,11 @@ public class main {
         File liwcCountFile = new File(liwcCountFilePath);
         
         // Getting Trump valid users and non-trump users
-//        Database.createValidUserTable(validUserTable, postTableName);
-//        IOReadWrite.categoryCount(LimitedLIWCFeatureFile, liwcCountFile, single_newsType, validUserTable);
-//        Database.loadCountFileIntoTables(liwcCountFilePath + "/Trump", countTable);
-//        Database.createValidTrumpUser(validUserTable, countTable);
-//        Database.createNonTrumpUser(postTableName, validUserTable, countTable);
+        Database.createValidUserTable(validUserTable, postTableName);
+        IOReadWrite.categoryCount(LimitedLIWCFeatureFile, liwcCountFile, postTableName, validUserTable);
+        Database.loadCountFileIntoTables(liwcCountFilePath + "/Trump", countTable);
+        Database.createValidTrumpUser(validUserTable, countTable);
+        Database.createNonTrumpUser(postTableName, validUserTable, countTable);
 
 //        System.out.println("\n Counting Noun in " + single_newsType + " ......");
 //        IOReadWrite.countNoun(liwcCountFile, postTableName, validUserTable);

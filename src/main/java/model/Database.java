@@ -543,9 +543,7 @@ public class Database {
                 post = result.getString(1);
                 posts.add(post);
             }
-        } catch (SQLException | ClassNotFoundException ex) {
-            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InstantiationException | IllegalAccessException ex) {
+        } catch (SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
             Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
         }
         return posts;
@@ -569,9 +567,7 @@ public class Database {
                 String post = result.getString(2);
                 postCallback.onPostFound(user, post);
             }
-        } catch (SQLException | ClassNotFoundException ex) {
-            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InstantiationException | IllegalAccessException ex) {
+        } catch (SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
             Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -1041,14 +1037,16 @@ public class Database {
 
             String insertQuery = "INSERT INTO " + validUserTable
                     + " select 0, T1.User from \n"
-                    + "(select User, Count, Post_Size from " + countTable
-                    + " having Count/Post_Size >= Round(0.0000,6) and Count >= 5) T1;";
+                    + "(select User, sum(Count)/sum(Post_Size) as Freq, sum(Count) as TrumpCount from " + countTable
+                    + " group by User "
+                    + " having (freq > Round(0.0000,6) and TrumpCount >= 5)"
+                    + " order by User) T1;";
 
             String indexQuery = "ALTER table " + validUserTable
                     + " add index idx_usr(User)";
 
             Statement statement = connection.createStatement();
-            System.out.println(insertQuery);
+//            System.out.println(insertQuery);
 
             statement.executeUpdate(dropTableQuery);
 

@@ -330,14 +330,14 @@ public class IOReadWrite {
         }
     }
 
-    public static void categoryCount(String LIWCCountFolderPath, File liwcCountFile, String single_newsType, String validUserTable) {
+    public static void categoryCount(String LIWCCountFolderPath, File liwcCountFile, String postTableName, String validUserTable) {
         try {
             ArrayList<String> fileList = getListOfFile(LIWCCountFolderPath);
 
             for (String filepath : fileList) {
                 if (!filepath.startsWith(".")) {
                     ArrayList<String> keywordList = IOReadWrite.loadLiwcWord(LIWCCountFolderPath, filepath);
-                    searchCategoryForValidUser(single_newsType, keywordList, filepath, liwcCountFile, validUserTable);
+                    searchCategoryForValidUser(postTableName, keywordList, filepath, liwcCountFile, validUserTable);
 //                countLIWCForUser(keywordList, filepath, liwcCountFile);
 //                    searchCategoryWithDay(single_newsType, keywordList, filepath, liwcCountFile);
                 }
